@@ -51,25 +51,18 @@ def main():
     OOD_sets, OOD_loaders = [], []
     if args.InD_Dataset == 'Cifar_10':
         OOD_Dataset = ['SVHN', 'Imagenet_r', 'Imagenet_c']
-
-        # Get all OOD datasets     
-        for dataset in OOD_Dataset:
-            _, OOD_set, _, OODloader = data_dic[dataset](batch_size = args.train_batch_size, 
-                                                        test_batch_size = args.test_batch_size)
-            OOD_sets.append(OOD_set)
-            OOD_loaders.append(OODloader)
-
     else:
         if args.InD_Dataset == 'MNIST':
             OOD_Dataset = ['FashionMNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
         elif args.InD_Dataset == 'FashionMNIST':
             OOD_Dataset = ['MNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
-        # Get all OOD datasets     
-        for dataset in OOD_Dataset:
-            _, OOD_set, _, OODloader = data_dic[dataset](batch_size = train_batch_size, 
-                                                        test_batch_size = test_batch_size, into_grey = True)
-            OOD_sets.append(OOD_set)
-            OOD_loaders.append(OODloader)
+
+    # Get all OOD datasets     
+    for dataset in OOD_Dataset:
+        _, OOD_set, _, OODloader = data_dic[dataset](batch_size = args.train_batch_size, 
+                                                    test_batch_size = args.test_batch_size, into_grey = True)
+        OOD_sets.append(OOD_set)
+        OOD_loaders.append(OODloader)
 
     parent_dir = os.getcwd()
     if args.InD_Dataset == 'Cifar_10':
