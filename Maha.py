@@ -43,29 +43,44 @@ def main():
 
     # Parse the command-line arguments
     args = parser.parse_args()
+    print("InD dataset:", args.InD_Dataset)
 
 
     train_set, test_set, trloader, tsloader = data_dic[args.InD_Dataset](batch_size = args.train_batch_size, 
                                                                     test_batch_size = args.test_batch_size)
     OOD_sets, OOD_loaders = [], []
+    if args.InD_Dataset == 'Cifar_10':
+        OOD_Dataset = ['SVHN', 'Imagenet_r', 'Imagenet_c']
+
+        # Get all OOD datasets     
+        for dataset in OOD_Dataset:
+            _, OOD_set, _, OODloader = data_dic[dataset](batch_size = args.train_batch_size, 
+                                                        test_batch_size = args.test_batch_size)
+            OOD_sets.append(OOD_set)
+            OOD_loaders.append(OODloader)
+
+    else:
+        if args.InD_Dataset == 'MNIST':
+            OOD_Dataset = ['FashionMNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
+        elif args.InD_Dataset == 'FashionMNIST':
+            OOD_Dataset = ['MNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
+        # Get all OOD datasets     
+        for dataset in OOD_Dataset:
+            _, OOD_set, _, OODloader = data_dic[dataset](batch_size = train_batch_size, 
+                                                        test_batch_size = test_batch_size, into_grey = True)
+            OOD_sets.append(OOD_set)
+            OOD_loaders.append(OODloader)
+
     parent_dir = os.getcwd()
     if args.InD_Dataset == 'Cifar_10':
         net_name = "densenet"
         net_Maha = torch.load('./pre_trained/' + net_name + '_' + args.InD_Dataset + '.pth', map_location = "cuda:0")
 
     else:
-        if args.InD_Dataset == 'MNIST':
-            # OOD_Dataset = ['Imagenet_r']
-            OOD_Dataset = ['FashionMNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
-        elif args.InD_Dataset == 'FashionMNIST':
-            OOD_Dataset = ['MNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
-
         net_name = "dnn_" + args.InD_Dataset
         net_Maha = data_model[args.InD_Dataset]()
         net_Maha.load_state_dict(torch.load(os.path.join(parent_dir, 'pre_trained/' + args.InD_Dataset + "_net.pt")))
 
-
-        # net_Maha = data_model[InD_Dataset]()
     
     outf = parent_dir + '/output/' + net_name  + '/'
     if os.path.isdir(outf) == False:
