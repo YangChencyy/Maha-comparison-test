@@ -8,10 +8,10 @@
 #SBATCH --mail-user=rivachen@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --partition=standard
-#SBATCH --output=/home/rivachen/ODIN-comparison-test/mnist_results.log
+#SBATCH --output=/home/rivachen/Maha-comparison-test/fmnist_results.log
 
 # module purge
 # conda init bash
 source activate GP
 
-python Maha.py 'MNIST' 128 128  
+python Maha.py 'FashionMNIST' 128 128  
