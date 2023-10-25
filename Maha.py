@@ -58,11 +58,13 @@ def main():
 
     else:
         if args.InD_Dataset == 'MNIST':
-            OOD_Dataset = ['FashionMNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
+            OOD_Dataset = ['Imagenet_r']
+            # OOD_Dataset = ['FashionMNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
         elif args.InD_Dataset == 'FashionMNIST':
             OOD_Dataset = ['MNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
-        net_name = "dnn_" + args.InD_Dataset
-        net_Maha = torch.load(os.path.join(parent_dir, args.InD_Dataset + "_net.pt"))
+
+        net_Maha = data_model[args.InD_Dataset]()
+        net_Maha.load_state_dict(torch.load(os.path.join(parent_dir, 'pre_trained/' + args.InD_Dataset + "_net.pt")))
 
         # Get all OOD datasets     
         for dataset in OOD_Dataset:
@@ -79,7 +81,9 @@ def main():
 
     
     Generate_Maha(net_Maha, outf, args.InD_Dataset, OOD_Dataset, trloader, tsloader, 
-                OOD_loaders, net_name, gpu = gpu, num_classes = 10)
+                OOD_loaders, net_name, num_classes = 10)
     Regression_Maha(args.InD_Dataset, OOD_Dataset, net_name, outf)
 
 
+if __name__ == "__main__":
+    main()

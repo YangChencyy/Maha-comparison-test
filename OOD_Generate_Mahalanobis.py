@@ -15,20 +15,20 @@ import os
 from torchvision import transforms
 from torch.autograd import Variable
 
-import Mahalanobis.models
-import Mahalanobis.lib_generation
+import models
+import lib_generation
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
-                  trloader, tsloader, OOD_loaders, net = 'densenet', gpu = 0, num_classes = 10):
+                  trloader, tsloader, OOD_loaders, net = 'densenet', num_classes = 10):
 
-    torch.cuda.manual_seed(0)
-    if torch.cuda.is_available():
-        torch.cuda.set_device(gpu)
+    # torch.cuda.manual_seed(0)
+    # if torch.cuda.is_available():
+    #     torch.cuda.set_device(gpu)
 
-    model.cuda()
+    model.to(device)
     
     # load dataset
     train_loader, test_loader = trloader, tsloader

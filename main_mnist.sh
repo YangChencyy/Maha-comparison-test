@@ -14,4 +14,4 @@
 # conda init bash
 source activate GP
 
-python ODIN.py 'MNIST' 128 128
+python Maha.py 'MNIST' 128 128
