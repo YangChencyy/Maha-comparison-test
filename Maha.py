@@ -63,8 +63,8 @@ def main():
 
     else:
         if args.InD_Dataset == 'MNIST':
-            OOD_Dataset = ['Imagenet_r']
-            # OOD_Dataset = ['FashionMNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
+            # OOD_Dataset = ['Imagenet_r']
+            OOD_Dataset = ['FashionMNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
         elif args.InD_Dataset == 'FashionMNIST':
             OOD_Dataset = ['MNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
 
