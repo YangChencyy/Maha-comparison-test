@@ -6,6 +6,11 @@ from OOD_Regression_Mahalanobis import Regression_Maha
 
 import argparse
 
+import warnings
+
+# Suppress all warnings
+warnings.filterwarnings("ignore")
+
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -63,6 +68,7 @@ def main():
         elif args.InD_Dataset == 'FashionMNIST':
             OOD_Dataset = ['MNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
 
+        net_name = 'dnn'
         net_Maha = data_model[args.InD_Dataset]()
         net_Maha.load_state_dict(torch.load(os.path.join(parent_dir, 'pre_trained/' + args.InD_Dataset + "_net.pt")))
 

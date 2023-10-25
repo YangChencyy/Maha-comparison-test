@@ -50,7 +50,7 @@ def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
         count += 1
         
     print('get sample mean and covariance')
-    sample_mean, precision = Mahalanobis.lib_generation.sample_estimator(model, num_classes, feature_list, train_loader)
+    sample_mean, precision = lib_generation.sample_estimator(model, num_classes, feature_list, train_loader)
     for i in range(len(sample_mean)):
         print("sample mean shape:", str(i), sample_mean[i].shape)
     
@@ -61,7 +61,7 @@ def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
     for magnitude in m_list:
         print('Noise: ' + str(magnitude))
         for i in range(num_output):
-            M_in = Mahalanobis.lib_generation.get_Mahalanobis_score(model, test_loader, num_classes, outf, \
+            M_in = lib_generation.get_Mahalanobis_score(model, test_loader, num_classes, outf, \
                                                         True, net, sample_mean, precision, i, magnitude)
             M_in = np.asarray(M_in, dtype=np.float32)
             if i == 0:
@@ -75,7 +75,7 @@ def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
             out_test_loader = OOD_loaders[j]
             print('Out-distribution: ' + out_dist) 
             for i in range(num_output):
-                M_out = Mahalanobis.lib_generation.get_Mahalanobis_score(model, out_test_loader, num_classes, outf, \
+                M_out = lib_generation.get_Mahalanobis_score(model, out_test_loader, num_classes, outf, \
                                                                 False, net, sample_mean, precision, i, magnitude)
                 M_out = np.asarray(M_out, dtype=np.float32)
                 if i == 0:
@@ -85,7 +85,7 @@ def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
 
             Mahalanobis_in = np.asarray(Mahalanobis_in, dtype=np.float32)
             Mahalanobis_out = np.asarray(Mahalanobis_out, dtype=np.float32)
-            Mahalanobis_data, Mahalanobis_labels = Mahalanobis.lib_generation.merge_and_generate_labels(Mahalanobis_out, Mahalanobis_in)
+            Mahalanobis_data, Mahalanobis_labels = lib_generation.merge_and_generate_labels(Mahalanobis_out, Mahalanobis_in)
             file_name = os.path.join(outf, 'Mahalanobis_%s_%s_%s.npy' % (str(magnitude), InD_Dataset , out_dist))
             Mahalanobis_data = np.concatenate((Mahalanobis_data, Mahalanobis_labels), axis=1)
             np.save(file_name, Mahalanobis_data)
