@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --account=sunwbgt98
-#SBATCH --job-name=ODIN
+#SBATCH --job-name=Maha_mnist
 #SBATCH --nodes=1
 #SBATCH --mem=8GB
 #SBATCH --time=24:00:00

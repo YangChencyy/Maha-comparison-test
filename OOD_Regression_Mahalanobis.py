@@ -24,7 +24,7 @@ def Regression_Maha(InD_Dataset, OOD_Dataset, net_type, outf):
     list_best_results, list_best_results_index = [], []
     for dataset in dataset_list:
         print('In-distribution: ', dataset)
-        outf = './output/' + net_type + '_' + dataset + '/'
+        outf = './output/' + net_type + '/'
         out_list = OOD_Dataset
 
         list_best_results_out, list_best_results_index_out = [], []
