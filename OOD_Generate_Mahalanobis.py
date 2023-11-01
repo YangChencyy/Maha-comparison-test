@@ -49,14 +49,14 @@ def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
         feature_list[count] = out.size(1)
         count += 1
         
-    print('get sample mean and covariance')
+    # print('get sample mean and covariance')
     sample_mean, precision = lib_generation.sample_estimator(model, num_classes, feature_list, train_loader)
-    for i in range(len(sample_mean)):
-        print("sample mean shape:", str(i), sample_mean[i].shape)
+    # for i in range(len(sample_mean)):
+    #     print("sample mean shape:", str(i), sample_mean[i].shape)
     
     
     print('get Mahalanobis scores')
-    m_list = [0.0, 0.01, 0.005, 0.002, 0.0014, 0.001, 0.0005]
+    m_list = [0.0] #, 0.01, 0.005, 0.002, 0.0014, 0.001, 0.0005]
     # m_list = [0.0]
     for magnitude in m_list:
         print('Noise: ' + str(magnitude))
@@ -70,7 +70,7 @@ def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
                 Mahalanobis_in = np.concatenate((Mahalanobis_in, M_in.reshape((M_in.shape[0], -1))), axis=1)
 
         for j in range(len(OOD_Dataset)): 
-            print("OOD: ", OOD_Dataset[j])
+            # print("OOD: ", OOD_Dataset[j])
             out_dist = OOD_Dataset[j]
             out_test_loader = OOD_loaders[j]
             print('Out-distribution: ' + out_dist) 
@@ -85,7 +85,7 @@ def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
 
             Mahalanobis_in = np.asarray(Mahalanobis_in, dtype=np.float32)
             Mahalanobis_out = np.asarray(Mahalanobis_out, dtype=np.float32)
-            Mahalanobis_data, Mahalanobis_labels = lib_generation.merge_and_generate_labels(Mahalanobis_out, Mahalanobis_in)
+            Mahalanobis_data, Mahalanobis_labels = lib_generation.merge_and_generate_labels(Mahalanobis_out, Mahalanobis_in) ## TODO
             file_name = os.path.join(outf, 'Mahalanobis_%s_%s_%s.npy' % (str(magnitude), InD_Dataset , out_dist))
             Mahalanobis_data = np.concatenate((Mahalanobis_data, Mahalanobis_labels), axis=1)
             np.save(file_name, Mahalanobis_data)
