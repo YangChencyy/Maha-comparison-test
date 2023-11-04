@@ -26,13 +26,13 @@ def get_curve(dir_name, stypes = ['Baseline', 'Gaussian_LDA']):
         novel.sort()
         end = np.max([np.max(known), np.max(novel)])
         start = np.min([np.min(known),np.min(novel)])
-        print('shape:', known.shape, novel.shape)
+        # print('shape:', known.shape, novel.shape)
         num_k = known.shape[0]
         num_n = novel.shape[0]
         tp[stype] = -np.ones([num_k+num_n+1], dtype=int)
         fp[stype] = -np.ones([num_k+num_n+1], dtype=int)
         tp[stype][0], fp[stype][0] = num_k, num_n
-        print("num_k, num_n:", num_k, num_n)
+        # print("num_k, num_n:", num_k, num_n)
         k, n = 0, 0
         for l in range(num_k+num_n):
             if k == num_k:
@@ -53,12 +53,14 @@ def get_curve(dir_name, stypes = ['Baseline', 'Gaussian_LDA']):
                     tp[stype][l+1] = tp[stype][l] - 1
                     fp[stype][l+1] = fp[stype][l]
         tpr95_pos = np.abs(tp[stype] / num_k - .95).argmin()
-        print(tpr95_pos)
+        # print(tpr95_pos)
         tnr_at_tpr95[stype] = 1. - fp[stype][tpr95_pos] / num_n
+        print("old tnr_at_tpr95:", tnr_at_tpr95[stype])
 
         # new threshold
         q95 = np.percentile(known, 5)
         tnr_at_tpr95[stype] = np.count_nonzero(novel < q95) / len(novel) # np.sum(novel < q95) / len(novel)
+        print("new tnr_at_tpr95:", tnr_at_tpr95[stype])
     return tp, fp, tnr_at_tpr95
 
 def metric(dir_name, stypes = ['Bas', 'Gau'], verbose=False):
