@@ -14,7 +14,6 @@ from sklearn.linear_model import LogisticRegressionCV
 
 def Regression_Maha(InD_Dataset, OOD_Dataset, net_type, outf):
     # initial setup
-    # dataset_list = ['cifar10']
     dataset_list = [InD_Dataset]
     # score_list = ['Mahalanobis_0.0', 'Mahalanobis_0.01', 'Mahalanobis_0.005',
     #               'Mahalanobis_0.002', 'Mahalanobis_0.0014', 'Mahalanobis_0.001', 'Mahalanobis_0.0005']

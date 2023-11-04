@@ -39,7 +39,6 @@ def main():
     parser.add_argument("InD_Dataset", type=str, help="The name of the InD dataset.")
     parser.add_argument("train_batch_size", type=int, help="train_batch_size")
     parser.add_argument("test_batch_size", type=int, help="test_batch_size")
-    # parser.add_argument("gpu", type=int, help="number of gpu")
 
     # Parse the command-line arguments
     args = parser.parse_args()
@@ -49,8 +48,10 @@ def main():
     train_set, test_set, trloader, tsloader = data_dic[args.InD_Dataset](batch_size = args.train_batch_size, 
                                                                     test_batch_size = args.test_batch_size)
     OOD_sets, OOD_loaders = [], []
+    into_grey = True
     if args.InD_Dataset == 'Cifar_10':
         OOD_Dataset = ['SVHN', 'Imagenet_r', 'Imagenet_c']
+        into_grey = False
     else:
         if args.InD_Dataset == 'MNIST':
             OOD_Dataset = ['FashionMNIST', 'Cifar_10', 'SVHN', 'Imagenet_r', 'Imagenet_c']
@@ -60,7 +61,7 @@ def main():
     # Get all OOD datasets     
     for dataset in OOD_Dataset:
         _, OOD_set, _, OODloader = data_dic[dataset](batch_size = args.train_batch_size, 
-                                                    test_batch_size = args.test_batch_size, into_grey = True)
+                                                    test_batch_size = args.test_batch_size, into_grey = into_grey)
         OOD_sets.append(OOD_set)
         OOD_loaders.append(OODloader)
 

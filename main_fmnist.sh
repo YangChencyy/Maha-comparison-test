@@ -8,7 +8,7 @@
 #SBATCH --mail-user=rivachen@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --partition=standard
-#SBATCH --output=/home/rivachen/Maha-comparison-test/fmnist_results.log
+#SBATCH --output=/home/rivachen/Maha-comparison-test/fmnist_results_new.log
 
 # module purge
 # conda init bash

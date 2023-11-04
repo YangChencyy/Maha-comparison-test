@@ -55,6 +55,10 @@ def get_curve(dir_name, stypes = ['Baseline', 'Gaussian_LDA']):
         tpr95_pos = np.abs(tp[stype] / num_k - .95).argmin()
         print(tpr95_pos)
         tnr_at_tpr95[stype] = 1. - fp[stype][tpr95_pos] / num_n
+
+        # new threshold
+        q95 = np.percentile(known, 5)
+        tnr_at_tpr95[stype] = np.count_nonzero(novel < q95) / len(novel) # np.sum(novel < q95) / len(novel)
     return tp, fp, tnr_at_tpr95
 
 def metric(dir_name, stypes = ['Bas', 'Gau'], verbose=False):
