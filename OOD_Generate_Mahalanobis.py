@@ -56,7 +56,7 @@ def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
     
     
     print('get Mahalanobis scores')
-    m_list = [0.0] #, 0.01, 0.005, 0.002, 0.0014, 0.001, 0.0005]
+    m_list = [0.0, 0.01, 0.005, 0.002, 0.0014, 0.001, 0.0005]
     # m_list = [0.0]
     for magnitude in m_list:
         print('Noise: ' + str(magnitude))
@@ -73,7 +73,7 @@ def Generate_Maha(model, outf, InD_Dataset, OOD_Dataset,
             # print("OOD: ", OOD_Dataset[j])
             out_dist = OOD_Dataset[j]
             out_test_loader = OOD_loaders[j]
-            print('Out-distribution: ' + out_dist) 
+            # print('Out-distribution: ' + out_dist) 
             for i in range(num_output):
                 M_out = lib_generation.get_Mahalanobis_score(model, out_test_loader, num_classes, outf, \
                                                                 False, net, sample_mean, precision, i, magnitude)

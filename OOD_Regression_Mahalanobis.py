@@ -41,9 +41,9 @@ def Regression_Maha(InD_Dataset, OOD_Dataset, net_type, outf):
                     (X_val[500:1000], X_val[1500:]))
                 Y_val_for_test = np.concatenate(
                     (Y_val[500:1000], Y_val[1500:]))
-                print(X_train.shape, Y_train.shape)
-                print(Y_train[0:10])  # 1
-                print(sum(Y_train))
+                # print(X_train.shape, Y_train.shape)
+                # print(Y_train[0:10])  # 1
+                # print(sum(Y_train))
                 lr = LogisticRegressionCV(n_jobs=-1).fit(X_train, Y_train)
                 y_pred = lr.predict_proba(X_train)[:, 1]
                 print('training mse: {:.4f}'.format(np.mean(y_pred - Y_train)))
@@ -70,7 +70,7 @@ def Regression_Maha(InD_Dataset, OOD_Dataset, net_type, outf):
         out_list = InD_Dataset
         count_out = 0
         for results in in_list:
-            print('out_distribution: ' + out_list[count_out])
+            print('out_distribution: ' + out_list)
             for mtype in mtypes:
                 print(' {mtype:6s}'.format(mtype=mtype), end='')
             print('\n{val:6.2f}'.format(
